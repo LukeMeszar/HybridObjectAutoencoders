@@ -16,9 +16,11 @@ ss=StandardScaler()
 X = ss.fit_transform(X)
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+X_train = X_train[:10000]
+Y_train = Y_train[:10000]
 
 classifier = SupervisedDBNClassification(hidden_layers_structure=[256, 256],\
-learning_rate_rbm=0.05,learning_rate=0.1,n_epochs_rbm=10,n_iter_backprop=100,\
+learning_rate_rbm=0.05,learning_rate=0.1,n_epochs_rbm=3,n_iter_backprop=100,\
 batch_size=32,activation_function='relu',dropout_p=0.2)
 
 classifier.fit(X_train, Y_train)
