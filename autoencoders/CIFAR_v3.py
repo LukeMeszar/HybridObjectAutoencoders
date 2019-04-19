@@ -8,36 +8,99 @@ import numpy as np
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
-class CIFAREncoderV2(nn.Module):
+class ScaleLayer(nn.Module):
+    def __init__(self, init_value=1e-3):
+        super().__init__()
+        self.scale = nn.Parameter(torch.FloatTensor([init_value]))
+
+    def forward(self, input):
+        return input * self.scale
+
+class CIFAREncoderV3(nn.Module):
     def __init__(self, hidden_layer_size):
-        super(CIFAREncoderV2, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, 3, 1, 1)
-        self.conv2 = nn.Conv2d(32, 32, 3, 1, 1)
-        self.conv3 = nn.Conv2d(32, 64, 3, 1, 1)
-        self.conv4 = nn.Conv2d(64, 64, 3, 1, 1)
-        self.conv5 = nn.Conv2d(64, 128, 3, 1, 1)
-        self.conv6 = nn.Conv2d(128, 128, 3, 1, 1)
-        self.fc1 = nn.Linear(128*8*8, hidden_layer_size)
+        super(CIFAREncoderV3, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.scale1 = ScaleLayer()
+        self.conv2 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn2 = nn.BatchNorm2d(128)
+        self.scale2 = ScaleLayer()
+        self.conv3 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn3 = nn.BatchNorm2d(128)
+        self.scale3 = ScaleLayer()
+        self.conv4 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn4 = nn.BatchNorm2d(128)
+        self.scale4 = ScaleLayer()
+        self.conv5 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn5 = nn.BatchNorm2d(128)
+        self.scale5 = ScaleLayer()
+        self.conv6 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn6 = nn.BatchNorm2d(128)
+        self.scale6 = ScaleLayer()
+        self.conv7 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn7 = nn.BatchNorm2d(128)
+        self.scale7 = ScaleLayer()
+        self.conv8 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn8 = nn.BatchNorm2d(128)
+        self.scale8 = ScaleLayer()
+        self.conv9 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn9 = nn.BatchNorm2d(128)
+        self.scale9 = ScaleLayer()
+        self.conv10 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn10 = nn.BatchNorm2d(128)
+        self.scale10 = ScaleLayer()
+        self.conv11 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=1, stride=1, padding=1)
+        self.bn11 = nn.BatchNorm2d(128)
+        self.scale11 = ScaleLayer()
+        self.conv12 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=1, stride=1, padding=1)
+        self.bn12 = nn.BatchNorm2d(128)
+        self.scale12 = ScaleLayer()
+        self.conv13 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.bn13 = nn.BatchNorm2d(128)
+        self.scale13 = ScaleLayer()
+        self.fc1 = nn.Linear(128*1*1, hidden_layer_size)
         
     def forward(self, x):
         x = (x - 0.5) * 2
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = F.max_pool2d(x, 2)
-        x = F.relu(self.conv3(x))
-        x = F.relu(self.conv4(x))
-        x = F.max_pool2d(x, 2)
-        x = F.relu(self.conv5(x))
-        x = F.relu(self.conv6(x))
-        print(x.shape)
-        x = x.view(-1,128*8*8)
-        
+        x = F.relu(self.scale1(self.bn1(self.conv1(x))))
+        x = F.relu(self.scale2(self.bn2(self.conv2(x))))
+        x = F.max_pool2d(x,2)
+        x = F.relu(self.scale3(self.bn3(self.conv3(x))))
+        x = F.max_pool2d(x,2)
+        x = F.relu(self.scale4(self.bn4(self.conv4(x))))
+        x = F.max_pool2d(x,2)
+        x = F.relu(self.scale5(self.bn5(self.conv5(x))))
+        x = F.relu(self.scale6(self.bn6(self.conv6(x))))
+        x = F.relu(self.scale7(self.bn7(self.conv7(x))))
+        x = F.max_pool2d(x,2)
+        x = F.relu(self.scale8(self.bn8(self.conv8(x))))
+        x = F.max_pool2d(x,2)
+        x = F.relu(self.scale9(self.bn9(self.conv9(x))))
+        x = F.max_pool2d(x,2)
+        x = F.relu(self.scale10(self.bn10(self.conv10(x))))
+        x = F.relu(self.scale11(self.bn11(self.conv11(x))))
+        x = F.relu(self.scale12(self.bn12(self.conv12(x))))
+        x = F.max_pool2d(x,2)
+        x = F.relu(self.scale13(self.bn13(self.conv13(x))))
+        x = F.max_pool2d(x,2)
+        x = x.view(-1,128*1*1)
         x = F.relu(self.fc1(x))
         return x
+#         x = F.relu(self.conv3(x))
+#         x = F.relu(self.conv4(x))
+#         x = F.max_pool2d(x, 2)
+#         x = F.relu(self.conv3(x))
+#         x = F.relu(self.conv4(x))
+#         x = F.max_pool2d(x, 2)
+#         x = F.relu(self.conv5(x))
+#         x = F.relu(self.conv6(x))
+#         x = x.view(-1,128*8*8)
+#         x = F.relu(self.fc1(x))
+#         return x
     
-class CIFARClassifierV2(nn.Module):
+class CIFARClassifierV3(nn.Module):
     def __init__(self, encoder, hidden_layer_size):
-        super(CIFARClassifierV2, self).__init__()
+        super(CIFARClassifierV3, self).__init__()
         self.encoder = encoder
         self.fc = nn.Linear(hidden_layer_size, 10)
         
@@ -47,9 +110,9 @@ class CIFARClassifierV2(nn.Module):
         x = F.log_softmax(x, dim=1)
         return x
     
-class CIFARDecoderV2(nn.Module):
+class CIFARDecoderV3(nn.Module):
     def __init__(self, hidden_layer_size):
-        super(CIFARDecoderV2, self).__init__()
+        super(CIFARDecoderV3, self).__init__()
         self.fc1 = nn.Linear(hidden_layer_size, 256*8*8)
         self.conv1 = nn.Conv2d(256, 256, 3, 1, 1)
         self.conv2 = nn.Conv2d(256, 256, 3, 1, 1)
@@ -73,12 +136,12 @@ class CIFARDecoderV2(nn.Module):
         x = torch.sigmoid(self.conv7(x))
         return x
 
-class CIFARAutoEncoderV2(nn.Module):
+class CIFARAutoEncoderV3(nn.Module):
     def __init__(self, hidden_layer_size=128):
-        super(CIFARAutoEncoderV2, self).__init__()
-        self.encoder = CIFAREncoderV2(hidden_layer_size)
-        self.decoder = CIFARDecoderV2(hidden_layer_size)
-        self.classifier = CIFARClassifierV2(self.encoder, hidden_layer_size)
+        super(CIFARAutoEncoderV3, self).__init__()
+        self.encoder = CIFAREncoderV3(hidden_layer_size)
+        self.decoder = CIFARDecoderV3(hidden_layer_size)
+        self.classifier = CIFARClassifierV3(self.encoder, hidden_layer_size)
         self.hidden_layer_size = hidden_layer_size
     
     def forward(self, x):
