@@ -102,7 +102,7 @@ class CARSClassifierV3(nn.Module):
 class CARSDecoderV3(nn.Module):
     def __init__(self, hidden_layer_size):
         super(CARSDecoderV3, self).__init__()
-        self.fc1 = nn.Linear(hidden_layer_size, 256*8*8)
+        self.fc1 = nn.Linear(hidden_layer_size, 256*10*10)
         self.conv1 = nn.Conv2d(256, 256, 3, 1, 1)
         self.conv2 = nn.Conv2d(256, 256, 3, 1, 1)
         self.conv3 = nn.Conv2d(256, 128, 3, 1, 1)
@@ -113,13 +113,13 @@ class CARSDecoderV3(nn.Module):
         
     def forward(self, x):
         x = F.relu(self.fc1(x))
-        x = x.view(-1, 256, 8, 8)
+        x = x.view(-1, 256, 10, 10)
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = F.interpolate(x, scale_factor=2)
         x = F.relu(self.conv3(x))
         x = F.relu(self.conv4(x))
-        x = F.interpolate(x, scale_factor=2)
+        x = F.interpolate(x, scale_factor=2.5)
         x = F.relu(self.conv5(x))
         x = F.relu(self.conv6(x))
         x = torch.sigmoid(self.conv7(x))
@@ -129,7 +129,7 @@ class CARSAutoEncoderV3(nn.Module):
     def __init__(self, hidden_layer_size=128):
         super(CARSAutoEncoderV3, self).__init__()
         self.encoder = CARSEncoderV3(hidden_layer_size)
-        self.decoder = CARSDecoderV3(hidden_layer_size)
+        self.decoder = CARSDecoderV3(hidden_layer_size)                           
         self.classifier = CARSClassifierV3(self.encoder, hidden_layer_size)
         self.hidden_layer_size = hidden_layer_size
     
@@ -223,9 +223,9 @@ def get_cars_loaders(location='data', use_cuda=False, download=True, train_batch
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
 
     transform = transforms.Compose(
-        [transforms.ToPILImage(), transforms.ToTensor(), transforms.RandomCrop(size=200, pad_if_needed=True)])
-    cars_train = datasets.ImageFolder(root='../data/cars_train', transform=transform)
-    cars_test = datasets.ImageFolder(root='../data/cars_test', transform=transform)
+        [transforms.ToTensor()])
+    cars_train = datasets.ImageFolder(root='../data/train_imagefolder', transform=transform)
+    cars_test = datasets.ImageFolder(root='../data/test_imagefolder', transform=transform)
     train_loader = torch.utils.data.DataLoader(cars_train, batch_size=train_batch_size, shuffle=True, **kwargs)
 
     test_loader = torch.utils.data.DataLoader(cars_test, batch_size=test_batch_size, shuffle=True, **kwargs)
