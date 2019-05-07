@@ -54,3 +54,20 @@ Put the scripts to reproduce the project here
 # Trained Models
 
 Due to GitHub file size restrictions, all of our saved models can be found [here](https://keybase.pub/grantbaker/saved_models).
+
+# References
+
+Bengio, Yoshua, et al. "Better mixing via deep representations." International conference on machine learning. 2013.
+
+Coates, Adam, Andrew Ng, and Honglak Lee. "An analysis of single-layer networks in unsupervised feature learning." Proceedings of the fourteenth international conference on artificial intelligence and statistics. 2011.
+
+Hasanpour, Seyyed Hossein, et al. "Lets keep it simple, Using simple architectures to outperform deeper and more complex architectures." arXiv preprint arXiv:1608.06037 (2016).
+
+Krause, Jonathan, et al. "3d object representations for fine-grained categorization." Proceedings of the IEEE International Conference on Computer Vision Workshops. 2013.
+
+Kolesnikov, Alexander, et al. "Closed-form approximate CRF training for scalable image segmentation." European Conference on Computer Vision. Springer, Cham, 2014.
+
+Rifai, Salah, et al. "The manifold tangent classifier." Advances in Neural Information Processing Systems. 2011.
+
+
+
