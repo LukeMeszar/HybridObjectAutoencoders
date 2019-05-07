@@ -17,6 +17,15 @@ Our team consists of:
 - Max Schwarz ([masc7859](https://github.com/masc7859))
 - Rachel Westerkamp ([RachelWesterkamp](https://github.com/RachelWesterkamp))
 
+# Requirements
+
+The following packages are required for this project. We use Python 3. Python 2 is not supported. Please install with your favorite Python 3 package management system (e.g. pip, conda, etc.):
+- PyTorch ([see their documentation](https://pytorch.org/get-started/locally/))
+- Numpy
+- Matplotlib
+
+We have only run our models on Nvidia GPUs using PyTorch's support for CUDA. [PyTorch's documentation](https://pytorch.org/get-started/locally/) explains how to install PyTorch with CUDA support. Running our models without CUDA is not supported or recommended.
+
 # Results
 
 Below are some example results we obtained. First is a transformation from a 6 to an 8. These images are from the MNIST dataset (handwritten digits).
@@ -30,6 +39,14 @@ Here is an example of transformation from a cat to a plane. The images here are 
 When training the encoder and decoder separately, we noted better results. This is another CIFAR-10 example of a transition from a cat to a deer using separete training.
 
 ![Better CIFAR transition](cifartrans_cat_deer.png)
+
+We also looked at U-Nets, and obtained results that encoded the input images well, but did not transition well.
+
+![U-NET](autoencoders/cifar-unet.png)
+
+We also looked at higher-resolution images in the STL-10 dataset, which resulted in general shape recreation but still failed to capture the details of the image.
+
+![STL](autoencoders/stl-v1.png)
 
 # Discussion
 We began by using the MNIST dataset to visually analyze the semantic transformation between two handwritten digits. Although the decoded digits were blurry, they were still distinguishable.
