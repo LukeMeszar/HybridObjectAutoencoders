@@ -225,8 +225,8 @@ def get_cars_loaders(location='data', use_cuda=False, train_batch_size=20, test_
 
     transform = transforms.Compose(
         [transforms.ToTensor()])
-    cars_train = datasets.ImageFolder(root='../data/train_imagefolder', transform=transform)
-    cars_test = datasets.ImageFolder(root='../data/test_imagefolder', transform=transform)
+    cars_train = datasets.ImageFolder(root='./data/train_imagefolder', transform=transform)
+    cars_test = datasets.ImageFolder(root='./data/test_imagefolder', transform=transform)
     train_loader = torch.utils.data.DataLoader(cars_train, batch_size=train_batch_size, shuffle=True, **kwargs)
 
     test_loader = torch.utils.data.DataLoader(cars_test, batch_size=test_batch_size, shuffle=True, **kwargs)
@@ -324,8 +324,8 @@ if __name__ == "__main__":
         epoch_enc += 1
     
     for _ in range(50):
-        C.train_decoder(model, device, train_load, opt_dec, epoch_dec)
-        C.test_decoder(model, device, test_load)
+        train_decoder(model, device, train_load, opt_dec, epoch_dec)
+        test_decoder(model, device, test_load)
         epoch_dec += 1
         
     show_true_and_recreated_imgs(model, train_load, device)

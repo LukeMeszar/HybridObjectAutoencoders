@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.data
+import torch.optim
 from torchvision import datasets, transforms
 
 import numpy as np
@@ -29,9 +30,7 @@ class CIFAREncoderV2(nn.Module):
         x = F.max_pool2d(x, 2)
         x = F.relu(self.conv5(x))
         x = F.relu(self.conv6(x))
-        print(x.shape)
         x = x.view(-1,128*8*8)
-        
         x = F.relu(self.fc1(x))
         return x
     
@@ -50,26 +49,24 @@ class CIFARClassifierV2(nn.Module):
 class CIFARDecoderV2(nn.Module):
     def __init__(self, hidden_layer_size):
         super(CIFARDecoderV2, self).__init__()
-        self.fc1 = nn.Linear(hidden_layer_size, 256*8*8)
-        self.conv1 = nn.Conv2d(256, 256, 3, 1, 1)
-        self.conv2 = nn.Conv2d(256, 256, 3, 1, 1)
-        self.conv3 = nn.Conv2d(256, 128, 3, 1, 1)
-        self.conv4 = nn.Conv2d(128, 128, 3, 1, 1)
-        self.conv5 = nn.Conv2d(128, 128, 3, 1, 1)
-        self.conv6 = nn.Conv2d(128, 128, 3, 1, 1)
+        self.fc1 = nn.Linear(hidden_layer_size, 128*32*32)
+        self.conv1 = nn.Conv2d(128, 128, 3, 1, 1)
+        self.conv2 = nn.Conv2d(128, 128, 3, 1, 1)
+        self.conv3 = nn.Conv2d(128, 128, 3, 1, 1)
+#         self.conv4 = nn.Conv2d(128, 128, 3, 1, 1)
+#         self.conv5 = nn.Conv2d(128, 128, 3, 1, 1)
+#         self.conv6 = nn.Conv2d(128, 128, 3, 1, 1)
         self.conv7 = nn.Conv2d(128, 3, 3, 1, 1)
         
     def forward(self, x):
         x = F.relu(self.fc1(x))
-        x = x.view(-1, 256, 8, 8)
+        x = x.view(-1, 128, 32, 32)
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
-        x = F.interpolate(x, scale_factor=2)
         x = F.relu(self.conv3(x))
-        x = F.relu(self.conv4(x))
-        x = F.interpolate(x, scale_factor=2)
-        x = F.relu(self.conv5(x))
-        x = F.relu(self.conv6(x))
+#         x = F.relu(self.conv4(x))
+#         x = F.relu(self.conv5(x))
+#         x = F.relu(self.conv6(x))
         x = torch.sigmoid(self.conv7(x))
         return x
 
@@ -256,3 +253,39 @@ def show_transition(model, loader, device, n=10):
     ax.get_yaxis().set_visible(False)
 
     plt.show()
+    
+if __name__ == "__main__":
+    
+    import sys
+    
+    train_load, test_load = get_cifar_loaders(download=True)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    
+    if len(sys.argv) > 1:
+        # running pretrained model
+        model = torch.load(sys.argv[1]).to(device)
+    else:
+        # training new model
+        model = CIFARAutoEncoderV2(256).to(device)
+
+    
+        opt_enc = torch.optim.Adam(model.classifier.parameters(), lr=0.001)
+        opt_dec = torch.optim.Adam(model.decoder.parameters(), lr=0.001)
+    
+        epoch_enc = 0
+        epoch_dec = 0
+    
+    
+        for _ in range(20):
+            train_encoder(model, device, train_load, opt_enc, epoch_enc)
+            test_encoder(model, device, test_load)
+            epoch_enc += 1
+    
+        for _ in range(99):
+            train_decoder(model, device, train_load, opt_dec, epoch_dec)
+            test_decoder(model, device, test_load)
+            epoch_dec += 1
+        
+    show_true_and_recreated_imgs(model, train_load, device)
+    
+    show_transition(model, train_load, device)
