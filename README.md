@@ -1,6 +1,6 @@
 # HybridAnimalAutoencoders
 
-This project aims to use autoencoders and various other nerual networks to create hybrid animals.
+This project aims to use autoencoders and various other nerual networks to create hybrid animals. Autoencoders can represent structured, high-dimensional data in a low-dimensional manifold. We want to create animal or other object hybrids by linearly interpolating in the encoded space between two animals or objects, to morph one into the other. Evaluation is done qualitatively, based on the presence of high and low level features present through the hybridization.
 
 ## Project Metadata
 
@@ -21,15 +21,15 @@ Our team consists of:
 
 # Results
 
-Below are some example results we obtained. First is an example of a transformation from a 6 to an 8. These images are from the MNIST dataset (handwritten digits).
+Below are some example results we obtained. First is a transformation from a 6 to an 8. These images are from the MNIST dataset (handwritten digits).
 ![MNIST transistion](TransMNIST.PNG)
 
-Although there is some blurring of the images, the digits are still distinguishable, and teh semantic transformation is clear.
+Although there is some blurring of the images, the digits are still distinguishable, and the semantic transformation is clear.
 
 Here is an example of transformation from a cat to a plane. The images here are very blurry, almost to the point of unrecognizability. These images are from the CIFAR-10 dataset.
 ![CIFAR transition](FirstCifarTrans.PNG)
 
-When training the encoder and decoder separately, we noted better results. This is another CIFAR-10 example of a transition from a cat to a deer.
+When training the encoder and decoder separately, we noted better results. This is another CIFAR-10 example of a transition from a cat to a deer using separete training.
 
 ![Better CIFAR transition](cifartrans_cat_deer.png)
 
@@ -43,6 +43,9 @@ The STL dataset results also showed the semantic transformation, with slightly m
 On the stanford cars dataset, we implemented a segmentation technique where the background of the images was removed. This did not yield as improved results as we’d hoped.
 
 High frequency features (the details) were hard to capture and recreate. General shapes persisted in output images, but details did not.
+
+# Future Ideas
+It would be useful to classify at each point in the transformation to see where the network switches from one class to another, or completely fails. One method for impriving image quality would to be acquire higher-resolution data, or by investigating addition segmentation methods. Applying super-resolution mothods or more sophisticated upsampling techniques could also help to improve the results. 
 
 # How to Reproduce
 
