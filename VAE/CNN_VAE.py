@@ -18,7 +18,10 @@ from VAE_CIFAR_v2 import VAE_CIFAR_v2
 Setup
 """
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-CUDA = True
+if torch.cuda.is_available():
+    CUDA = True
+else:
+    CUDA = False
 SEED = 1
 BATCH_SIZE = 16
 LOG_INTERVAL = 100
@@ -48,8 +51,8 @@ def load_data():
 
     elif DATASET == 2:
         print("Load Data: CIFAR10+CARS_PROCESSED")
-        processed_CIFAR10_data_train = datasets.ImageFolder(root='cifar10_processed_train/', transform=transforms.ToTensor())
-        processed_CIFAR10_data_test = datasets.ImageFolder(root='cifar10_processed_test/', transform=transforms.ToTensor())
+        processed_CIFAR10_data_train = datasets.ImageFolder(root='train_imagefolder', transform=transforms.ToTensor())
+        processed_CIFAR10_data_test = datasets.ImageFolder(root='test_imagefolder', transform=transforms.ToTensor())
         train_loader = torch.utils.data.DataLoader(processed_CIFAR10_data_train, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
         test_loader = torch.utils.data.DataLoader(processed_CIFAR10_data_train, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
         return train_loader, test_loader
