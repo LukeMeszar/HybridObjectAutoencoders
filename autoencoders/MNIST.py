@@ -178,3 +178,23 @@ def show_transition(model, loader, device, n=10):
     ax.get_yaxis().set_visible(False)
 
     plt.show()
+    
+if __name__ == "__main__":
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model = MnistAutoEncoder(128).to(device)
+    train_load, test_load = get_mnist_loaders(download=True)
+    opt = torch.optim.Adam(model.parameters(), lr=0.01)
+    
+    epoch = 0
+   
+    
+    for _ in range(80):
+        train(model, device, train_load, opt, epoch)
+        test(model, device, test_load)
+        epoch_enc += 1
+        
+    
+    show_true_and_recreated_imgs(model, train_load, device)
+    
+    show_transition(model, train_load, device)

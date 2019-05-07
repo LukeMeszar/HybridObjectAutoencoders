@@ -258,3 +258,31 @@ def show_transition(model, loader, device, n=10):
     ax.get_yaxis().set_visible(False)
 
     plt.show()
+    
+if __name__ == "__main__":
+    
+    import sys
+    
+    train_load, test_load = get_stl_loaders(download=True)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    
+    if len(sys.argv) > 1:
+        # running pretrained model
+        model = torch.load(sys.argv[1]).to(device)
+    else:
+        # training new model
+        model = STLAutoEncoder(256).to(device)
+
+    
+        opt = torch.optim.Adam(model.parameters(), lr=0.001)
+    
+        epoch = 0
+    
+        for _ in range(99):
+            train(model, device, train_load, opt, epoch)
+            test(model, device, test_load)
+            epoch_dec += 1
+        
+    show_true_and_recreated_imgs(model, train_load, device)
+    
+    show_transition(model, train_load, device)
