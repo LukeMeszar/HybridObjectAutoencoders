@@ -54,6 +54,18 @@ class MnistAutoEncoder(nn.Module):
     
 
 def train(model, device, train_loader, optimizer, epoch):
+    """
+    Trains the entire model together.
+    
+    params:
+        model: pytorch model to train
+        device: device on which to train
+        train_loader: loader for data on which to train
+        optimizer: optimizer for parameter update rule
+        epoch: integer of current epoch (used only for printing)
+    
+    """
+    
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -69,6 +81,9 @@ def train(model, device, train_loader, optimizer, epoch):
 
 
 def test(model, device, test_loader):
+    """
+    Prints the test loss for each epoch.
+    """
     model.eval()
     test_loss = 0
     with torch.no_grad():
@@ -83,6 +98,9 @@ def test(model, device, test_loader):
 
 
 def get_mnist_loaders(location='data', use_cuda=False, download=True, train_batch_size=20, test_batch_size=4):
+    """
+    Returns loaders for the MNIST dataset
+    """
     
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     
@@ -105,6 +123,17 @@ def get_mnist_loaders(location='data', use_cuda=False, download=True, train_batc
 
 
 def show_true_and_recreated_imgs(model, loader, device, n=10):
+    """
+    Shows a row of original images and a row of recreated images
+    
+    params:
+        model: pytorch model to use in recreations
+        loader: loader from which to sample data to recreate
+        device: device on which it all lives
+        n: number of images to recreate
+    """
+    
+    
     model.eval()
     x_test = []
     decoded_imgs = []
@@ -135,6 +164,18 @@ def show_true_and_recreated_imgs(model, loader, device, n=10):
 
 
 def show_transition(model, loader, device, n=10):
+    """
+    Samples two images from the data, and shows recreation of the transition
+    in encoded space between the two images.
+    
+    params:
+        model: pytorch model to use in recreation
+        loader: data from which to sample
+        device: device on which everything lives
+        n: number of intermediate steps in transition
+    
+    """
+    
     encoded_vecs = torch.zeros([n, model.hidden_layer_size])
 
     with torch.no_grad():
@@ -149,7 +190,7 @@ def show_transition(model, loader, device, n=10):
         encoded_vecs[0] = encoded[0]
         encoded_vecs[n-1] = encoded[1]
         for i in range(1, n-1):
-            encoded_vecs[i] = ((n-i) / n) * encoded_vecs[0] + (i/n) * encoded_vecs[n-1]
+            encoded_vecs[i] = ((n-i-1) / (n-1)) * encoded_vecs[0] + (i/(n-1)) * encoded_vecs[n-1]
 
         encoded_vecs = encoded_vecs.to(device)
         imgs = model.decoder(encoded_vecs)

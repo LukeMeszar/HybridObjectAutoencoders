@@ -61,7 +61,7 @@ def show_transition(model, loader, device, img_1, img_2, n=10):
         encoded_vecs[0] = encoded[0]
         encoded_vecs[n-1] = encoded[1]
         for i in range(1, n-1):
-            encoded_vecs[i] = ((n-i) / n) * encoded_vecs[0] + (i/n) * encoded_vecs[n-1]
+            encoded_vecs[i] = ((n-i-1) / (n-1)) * encoded_vecs[0] + (i/(n-1)) * encoded_vecs[n-1]
 
         encoded_vecs = encoded_vecs.to(device)
         imgs = model.decoder(encoded_vecs)

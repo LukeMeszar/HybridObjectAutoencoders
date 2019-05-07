@@ -139,6 +139,18 @@ class CIFARAutoEncoderV3(nn.Module):
         return x
     
 def train_encoder(model, device, train_loader, optimizer, epoch):
+    """
+    Trains the encoder via the classifier in the model
+    
+    params:
+        model: torch model to train
+        device: device on which to train
+        train_loader: loader for the training data
+        optimizer: optimizer to use in training
+        epoch: integer of current epoch (only used for printing)
+    """
+    
+    
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -153,6 +165,17 @@ def train_encoder(model, device, train_loader, optimizer, epoch):
                 100. * batch_idx / len(train_loader), loss.item()))
             
 def test_encoder(model, device, test_loader):
+    """
+    Tests the encoder via classifier for accuracy
+    
+    params:
+        model: torch model to test
+        device: device on which to test
+        test_loader: data on which to test
+    """
+    
+    
+    
     model.eval()
     test_loss = 0
     correct = 0
@@ -171,6 +194,20 @@ def test_encoder(model, device, test_loader):
         100. * correct / len(test_loader.dataset)))
     
 def train_decoder(model, device, train_loader, optimizer, epoch):
+    """
+    Trains the decoder, holding weights in the encoder constant.
+    
+    params:
+        model: pytorch model whose decoder is to be trained
+        device: device on which to train
+        train_loader: loader for the training data set
+        optimizer: optimizer to use for training decoder
+        epoch: integer of current epoch (only for printing)
+    
+    """
+    
+    
+    
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data = data.to(device)
@@ -187,6 +224,17 @@ def train_decoder(model, device, train_loader, optimizer, epoch):
                 100. * batch_idx / len(train_loader), loss.item()))
 
 def test_decoder(model, device, test_loader):
+    """
+    Gives an indication of how the decoder is doing by showing a sample of
+    data and their recreations.
+    
+    params:
+        model: pytorch model which to test
+        device: device on which to test
+        test_loader: loader for the data on which to test
+    """
+    
+    
     n = 10
     
     x_test = []
@@ -220,6 +268,9 @@ def test_decoder(model, device, test_loader):
     plt.show()
     
 def get_cifar_loaders(location='data', use_cuda=False, download=True, train_batch_size=20, test_batch_size=20):
+    """
+    Returns loaders for the CIFAR-10 dataset.
+    """
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
 
     transform = transforms.Compose(
@@ -240,6 +291,17 @@ def denormalize(x):
     return np.transpose(x, (1, 2, 0))
 
 def show_true_and_recreated_imgs(model, loader, device, n=10):
+    """
+    Shows a row of original images and a row of recreated images
+    
+    params:
+        model: pytorch model to use in recreations
+        loader: loader from which to sample data to recreate
+        device: device on which it all lives
+        n: number of images to recreate
+    """
+    
+    
     model.eval()
     x_test = []
     decoded_imgs = []
@@ -268,6 +330,19 @@ def show_true_and_recreated_imgs(model, loader, device, n=10):
 
 
 def show_transition(model, loader, device, n=10):
+    """
+    Samples two images from the data, and shows recreation of the transition
+    in encoded space between the two images.
+    
+    params:
+        model: pytorch model to use in recreation
+        loader: data from which to sample
+        device: device on which everything lives
+        n: number of intermediate steps in transition
+    
+    """
+    
+    
     encoded_vecs = torch.zeros([n, model.hidden_layer_size])
 
     with torch.no_grad():
@@ -282,8 +357,8 @@ def show_transition(model, loader, device, n=10):
         encoded_vecs[0] = encoded[0]
         encoded_vecs[n-1] = encoded[1]
         for i in range(1, n-1):
-            encoded_vecs[i] = ((n-i) / n) * encoded_vecs[0] + (i/n) * encoded_vecs[n-1]
-
+            encoded_vecs[i] = ((n-i-1) / (n-1)) * encoded_vecs[0] + (i/(n-1)) * encoded_vecs[n-1]
+            
         encoded_vecs = encoded_vecs.to(device)
         imgs = model.decoder(encoded_vecs)
         imgs = imgs.cpu().numpy()

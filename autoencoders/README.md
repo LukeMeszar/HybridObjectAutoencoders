@@ -74,3 +74,8 @@ For the STL-10 dataset, which contains 96x96 images, like CIFAR, of 10 different
     - Run `python3 STL_v2.py` to download training data, train the model, and display the results.
     - Run `python3 STL_v2.py <model_name_here>` to display the results of of the model given the pretrained model `<model_name_here>`
     - Alternatively, all of this functionality is available in the Jupyter notebook.
+
+# Comments
+
+
+For an overview of how the code works, the CIFAR V2 models is best documented. Take a look at the documentation and comments there, and they should transfer easily to the other models.
