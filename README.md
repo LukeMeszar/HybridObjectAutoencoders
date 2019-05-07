@@ -7,9 +7,7 @@ This project aims to use autoencoders and various other nerual networks to creat
 This project was created for:
 
 - CSCI 5922: Neural Networks and Deep Learning
-
 - Professor Nicholas Dronen
-
 - Spring 2019
 
 Our team consists of:
