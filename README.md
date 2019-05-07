@@ -64,9 +64,9 @@ It would be useful to classify at each point in the transformation to see where 
 
 # How to Reproduce
 
-Put the scripts to reproduce the project here
-
 To run the VAE models, use the following command: ./vae.sh $1 where $1 is either 0,1,2 and represents the datasets MNIST, CIFAR10, or CIFAR10 and Stanford Cars respectively.
+
+To run any of the autoencoders, please see [the autoencoders README](autoencoders/README.md) for instructions.
 
 # Trained Models
 
