@@ -45,11 +45,13 @@ On the stanford cars dataset, we implemented a segmentation technique where the 
 High frequency features (the details) were hard to capture and recreate. General shapes persisted in output images, but details did not.
 
 # Future Ideas
-It would be useful to classify at each point in the transformation to see where the network switches from one class to another, or completely fails. One method for impriving image quality would to be acquire higher-resolution data, or by investigating addition segmentation methods. Applying super-resolution mothods or more sophisticated upsampling techniques could also help to improve the results. 
+It would be useful to classify at each point in the transformation to see where the network switches from one class to another, or completely fails. One method for impriving image quality would to be acquire higher-resolution data, or by investigating addition segmentation methods. Applying super-resolution mothods or more sophisticated upsampling techniques could also help to improve the results.
 
 # How to Reproduce
 
 Put the scripts to reproduce the project here
+
+To run the VAE models, use the following command: ./vae.sh $1 where $1 is either 0,1,2 and represents the datasets MNIST, CIFAR10, or CIFAR10 and Stanford Cars respectively.
 
 # Trained Models
 
@@ -68,6 +70,3 @@ Krause, Jonathan, et al. "3d object representations for fine-grained categorizat
 Kolesnikov, Alexander, et al. "Closed-form approximate CRF training for scalable image segmentation." European Conference on Computer Vision. Springer, Cham, 2014.
 
 Rifai, Salah, et al. "The manifold tangent classifier." Advances in Neural Information Processing Systems. 2011.
-
-
-

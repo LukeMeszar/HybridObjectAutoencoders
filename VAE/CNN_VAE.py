@@ -18,10 +18,7 @@ from VAE_CIFAR_v2 import VAE_CIFAR_v2
 Setup
 """
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-if torch.cuda.is_available():
-    CUDA = True
-else:
-    CUDA = False
+CUDA = True
 SEED = 1
 BATCH_SIZE = 16
 LOG_INTERVAL = 100
@@ -51,8 +48,12 @@ def load_data():
 
     elif DATASET == 2:
         print("Load Data: CIFAR10+CARS_PROCESSED")
-        processed_CIFAR10_data_train = datasets.ImageFolder(root='train_imagefolder', transform=transforms.ToTensor())
-        processed_CIFAR10_data_test = datasets.ImageFolder(root='test_imagefolder', transform=transforms.ToTensor())
+        #train_url = 'https://grantbaker.keybase.pub/data/background_filtered/train_imagefolder.zip'
+        #test_url = 'https://grantbaker.keybase.pub/data/background_filtered/test_imagefolder.zip'
+        #train_filename = wget.download(train_url, bar=bar_thermometer)
+        #test_filename = wget.download(test_url, bar=bar_thermometer)+
+        processed_CIFAR10_data_train = datasets.ImageFolder(root='train_imagefolder/', transform=transforms.ToTensor())
+        processed_CIFAR10_data_test = datasets.ImageFolder(root='test_imagefolder/', transform=transforms.ToTensor())
         train_loader = torch.utils.data.DataLoader(processed_CIFAR10_data_train, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
         test_loader = torch.utils.data.DataLoader(processed_CIFAR10_data_train, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
         return train_loader, test_loader
@@ -122,7 +123,7 @@ def test(epoch, model, test_loader):
                            './CIFAR10/reconstruction_' + str(epoch) + '.png', nrow=n)
             elif DATASET == 2:
                 comparison = torch.cat([data[:n],
-                                        recon_batch.view(BATCH_SIZE, 3, 100, 100)[:n]])
+                                        recon_batch.view(BATCH_SIZE, 3, 50, 50)[:n]])
                 save_image(comparison.data.cpu(),
                            './cifar10_processed/reconstruction_' + str(epoch) + '.png', nrow=n)
 
