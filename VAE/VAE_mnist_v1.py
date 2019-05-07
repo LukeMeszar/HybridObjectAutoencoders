@@ -58,7 +58,7 @@ class VAE_mnist(nn.Module):
         x = F.elu(self.fc2(x))
         x = x.view(-1, 128, 7, 7)
         x = F.relu(self.conv_t1(x))
-        x = F.sigmoid(self.conv_t2(x))
+        x = torch.sigmoid(self.conv_t2(x))
         return x.view(-1, 784)
 
     def forward(self, x: Variable) -> (Variable, Variable, Variable):

@@ -98,8 +98,9 @@ def test(epoch, model, test_loader):
         if CUDA:
             data = data.cuda()
 
-        # we're only going to infer, so no autograd at all required which means volatile=True
-        data = Variable(data, volatile=True)
+        # we're only going to infer, so no autograd at all required which means
+        with torch.no_grad():
+            data = Variable(data)
         recon_batch, mu, logvar = model(data)
         test_loss += model.loss_function(recon_batch, data, mu, logvar).item()
         if i == 0:
