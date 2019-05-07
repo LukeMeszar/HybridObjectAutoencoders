@@ -21,7 +21,28 @@ Our team consists of:
 
 # Results
 
-Let's put some of the cool transitions that we've made 
+Below are some example results we obtained. First is an example of a transformation from a 6 to an 8. These images are from the MNIST dataset (handwritten digits).
+![MNIST transistion](TransMNIST.PNG)
+
+Although there is some blurring of the images, the digits are still distinguishable, and teh semantic transformation is clear.
+
+Here is an example of transformation from a cat to a plane. The images here are very blurry, almost to the point of unrecognizability. These images are from the CIFAR-10 dataset.
+![CIFAR transition](FirstCifarTrans.PNG)
+
+When training the encoder and decoder separately, we noted better results. This is another CIFAR-10 example of a transition from a cat to a deer.
+
+![Better CIFAR transition](cifartrans_cat_deer.png)
+
+# Discussion
+We began by using the MNIST dataset to visually analyze the semantic transformation between two handwritten digits. Although the decoded digits were blurry, they were still distinguishable.
+
+When we switched to the CIFAR-10 dataset, we employed two techniques: one in which the encoder and decoder were trained separately, and one where they were trained together. Separating the training improved the results.
+
+The STL dataset results also showed the semantic transformation, with slightly more distinguishable results, perhaps as a result of the larger number of pixels in the original images.
+
+On the stanford cars dataset, we implemented a segmentation technique where the background of the images was removed. This did not yield as improved results as we’d hoped.
+
+High frequency features (the details) were hard to capture and recreate. General shapes persisted in output images, but details did not.
 
 # How to Reproduce
 
