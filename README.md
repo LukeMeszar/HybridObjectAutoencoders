@@ -29,24 +29,24 @@ We have only run our models on Nvidia GPUs using PyTorch's support for CUDA. [Py
 # Results
 
 Below are some example results we obtained. First is a transformation from a 6 to an 8. These images are from the MNIST dataset (handwritten digits).
-![MNIST transistion](TransMNIST.PNG)
+![MNIST transistion](sample_images/TransMNIST.PNG)
 
 Although there is some blurring of the images, the digits are still distinguishable, and the semantic transformation is clear.
 
 Here is an example of transformation from a cat to a plane. The images here are very blurry, almost to the point of unrecognizability. These images are from the CIFAR-10 dataset.
-![CIFAR transition](FirstCifarTrans.PNG)
+![CIFAR transition](sample_images/FirstCifarTrans.PNG)
 
 When training the encoder and decoder separately, we noted better results. This is another CIFAR-10 example of a transition from a cat to a deer using separete training.
 
-![Better CIFAR transition](cifartrans_cat_deer.png)
+![Better CIFAR transition](sample_images/cifartrans_cat_deer.png)
 
 We also looked at U-Nets, and obtained results that encoded the input images well, but did not transition well.
 
-![U-NET](autoencoders/cifar-unet.png)
+![U-NET](sample_images/cifar-unet.png)
 
 We also looked at higher-resolution images in the STL-10 dataset, which resulted in general shape recreation but still failed to capture the details of the image.
 
-![STL](autoencoders/stl-v1.png)
+![STL](sample_images/stl-v1.png)
 
 # Discussion
 We began by using the MNIST dataset to visually analyze the semantic transformation between two handwritten digits. Although the decoded digits were blurry, they were still distinguishable.
