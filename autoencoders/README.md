@@ -4,18 +4,18 @@ This section of the project contains the various autoencoder-based attempts to c
 
 # Contents
 
-## CARS dataset:
-The CARS dataset contains background-filtered images of cars, cats, dogs, and horses.
+## CIFAR10 + CARS dataset:
+The CIFAR10 + CARS dataset contains background-filtered images of cars, cats, dogs, and horses.
 
-- `cars-setup.sh`: a shell script that sets up data for the CARS files.
-- `CARS.py`: Python file that contains everything needed to run the CARS model
-- `cars.ipynb`: Jupyter notebook that contains logic for running the CARS model
+- `cars-setup.sh`: a shell script that sets up data for the CIFAR10 + CARS files.
+- `CARS.py`: Python file that contains everything needed to run the CIFAR10 + CARS model
+- `cars.ipynb`: Jupyter notebook that contains logic for running the CIFAR10 + CARS model
 - How to run:
   - Run `bash cars-setup.sh` to download and extract data
   - Run `python3 CARS.py` to train the model and display the results
   - Alternatively, open `cars.ipynb` with Jupyter, which offers similar functionality as the latter
-   
-## CIFAR dataset:
+
+## CIFAR10 dataset:
 For the CIFAR-10 dataset, we made several different models.
 
 - CIFAR V1 is a basic convolutional neural network, with the encoder and decoder trained simultaneously.
