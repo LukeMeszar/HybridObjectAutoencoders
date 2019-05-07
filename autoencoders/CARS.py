@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.data
+import torch.optim
 from torchvision import datasets, transforms
 
 import numpy as np
@@ -219,7 +220,7 @@ def test_decoder(model, device, test_loader):
         ax.get_yaxis().set_visible(False)
     plt.show()
     
-def get_cars_loaders(location='data', use_cuda=False, download=True, train_batch_size=20, test_batch_size=20):
+def get_cars_loaders(location='data', use_cuda=False, train_batch_size=20, test_batch_size=20):
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
 
     transform = transforms.Compose(
@@ -304,3 +305,29 @@ def show_transition(model, loader, device, n=10):
     ax.get_yaxis().set_visible(False)
 
     plt.show()
+    
+if __name__ == "__main__":
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model = CARSAutoEncoderV3(512).to(device)
+    train_load, test_load = get_cars_loaders()
+    opt_enc = torch.optim.Adam(model.classifier.parameters(), lr=0.01)
+    opt_dec = torch.optim.Adam(model.decoder.parameters(), lr=0.001)
+    
+    epoch_enc = 0
+    epoch_dec = 0
+    
+    
+    for _ in range(45):
+        train_encoder(model, device, train_load, opt_enc, epoch_enc)
+        test_encoder(model, device, test_load)
+        epoch_enc += 1
+    
+    for _ in range(50):
+        C.train_decoder(model, device, train_load, opt_dec, epoch_dec)
+        C.test_decoder(model, device, test_load)
+        epoch_dec += 1
+        
+    show_true_and_recreated_imgs(model, train_load, device)
+    
+    show_transition(model, train_load, device)
