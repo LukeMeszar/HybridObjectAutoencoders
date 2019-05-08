@@ -1,4 +1,4 @@
-# HybridAnimalAutoencoders
+# HybridObjectAutoencoders
 
 This project aims to use autoencoders and various other nerual networks to create hybrid animals. Autoencoders can represent structured, high-dimensional data in a low-dimensional manifold. We want to create animal or other object hybrids by linearly interpolating in the encoded space between two animals or objects, to morph one into the other. Evaluation is done qualitatively, based on the presence of high and low level features present through the hybridization.
 
