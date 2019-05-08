@@ -63,10 +63,12 @@ High frequency features (the details) were hard to capture and recreate. General
 It would be useful to classify at each point in the transformation to see where the network switches from one class to another, or completely fails. One method for impriving image quality would to be acquire higher-resolution data, or by investigating addition segmentation methods. Applying super-resolution mothods or more sophisticated upsampling techniques could also help to improve the results.
 
 # How to Reproduce
-
+A selection of the data can be downloaded using download_data.py. Other available datasets used, (MNIST, CIFAR, STL) can be downloaded manually or automatically from pytorch's dataloader.
+Pre-trained models can be downloaded using download_models.py
 To run the VAE models, use the following command: ./vae.sh $1 where $1 is either 0,1,2 and represents the datasets MNIST, CIFAR10, or CIFAR10 and Stanford Cars respectively.
+The autoencoders can be ran and trained through the scripts hybrid.py and train_models.py respectively. The --help option of each script gives the arguments and how to use.
 
-To run any of the autoencoders, please see [the autoencoders README](autoencoders/README.md) for instructions.
+For running and customizing specific autoencoders, please see [the autoencoders README](autoencoders/README.md) for instructions.
 
 # Trained Models
 
